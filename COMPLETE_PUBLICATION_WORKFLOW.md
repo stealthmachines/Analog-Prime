@@ -17,7 +17,7 @@
 
 ## ✅ AFTER Repository is Created: Execute This
 
-Once you see the blank repository at `https://github.com/stealthmachines/Analog_Prime`, 
+Once you see the blank repository at `https://github.com/stealthmachines/Analog_Prime`,
 paste this into PowerShell:
 
 ```powershell
