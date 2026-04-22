@@ -7,14 +7,6 @@ A CUDA-accelerated Mersenne prime candidate search engine built on Golden Recurs
 Algebra (GRA), gpucarry/NTT Lucas-Lehmer arithmetic, a learned MLP critic, a Markov trit
 verdict gate, and a full U-field bridge derived from the X+1=0 framework.
 
-**Status: TEST 1–11 pass — RTX 2060 (sm_75) — hdgl_bench_v40.exe: 34/34 pass**
-**v35b pipeline: psi filter · phi-lattice predictor · prismatic scorer**
-**v36: `hdgl_gpucarry_ll_large()` — multi-limb LL verified (M_9941 PRIME 0.23s, M_9949 COMPOSITE 0.23s)**
-**Ev1 Long [x]: Base4096 session handoff (948 bytes → 539 chars, round-trip PASS) · self-provisioning · Rosetta Stone (500 phrases) · `hdgl_corpus_seeder.c` — codebase self-emission (onion/fold26, 3-layer MATH/CODE/BUILD)**
-**Ev2 Long [x]: `ll_analog.c` — 8D Kuramoto analog path (CUDA-free); TEST 10: M_127/M_89 PRIME, M_131 COMPOSITE, osc LOCKED + residue=0 confirmed · CommLayerState (v6.c port) in multigpu_v34: async exponent ring, push/poll/delta**
-**Ev3 Long [x]: `empirical_validation.c` — BigG/Fudge10 PASSED (χ²_red≈0, 100% CODATA); beta=0.360942 → DN_EMPIRICAL_BETA → dn_amp calibrated · TEST 11: gate converges — V(prime) −0.17→+0.07, V(comp) +0.15→−0.01 after 500 TD(0) cycles · TEST 4 fixed: warp-election bound (hdgl_bench_v39.exe: 34/34 pass)**
-**Ev4 Long [x]: Circular reward accumulator on S¹ — `reward_accum` is now a phase angle ∈ [0,2π]; gate fires when cos(acc)>0.5; no freeze past cycle 400 (97k candidates/600 cycles). σ-trit→phvel, Wu Wei exploration bonus, Pluck kernel (random phase injection). hdgl_bench_v40.exe: 34/34 pass**
-
 ---
 
 ## Overview
@@ -570,6 +562,14 @@ S(U)    = |e^(iπΛ_φ^(U)) + 1_eff|                [X+1=0 discriminant from fie
 
 Prime invariant: coherent field → u_inner uniform across warp → M_U stable → S(U) minimum
 ```
+
+**Status: TEST 1–11 pass — RTX 2060 (sm_75) — hdgl_bench_v40.exe: 34/34 pass**
+**v35b pipeline: psi filter · phi-lattice predictor · prismatic scorer**
+**v36: `hdgl_gpucarry_ll_large()` — multi-limb LL verified (M_9941 PRIME 0.23s, M_9949 COMPOSITE 0.23s)**
+**Ev1 Long [x]: Base4096 session handoff (948 bytes → 539 chars, round-trip PASS) · self-provisioning · Rosetta Stone (500 phrases) · `hdgl_corpus_seeder.c` — codebase self-emission (onion/fold26, 3-layer MATH/CODE/BUILD)**
+**Ev2 Long [x]: `ll_analog.c` — 8D Kuramoto analog path (CUDA-free); TEST 10: M_127/M_89 PRIME, M_131 COMPOSITE, osc LOCKED + residue=0 confirmed · CommLayerState (v6.c port) in multigpu_v34: async exponent ring, push/poll/delta**
+**Ev3 Long [x]: `empirical_validation.c` — BigG/Fudge10 PASSED (χ²_red≈0, 100% CODATA); beta=0.360942 → DN_EMPIRICAL_BETA → dn_amp calibrated · TEST 11: gate converges — V(prime) −0.17→+0.07, V(comp) +0.15→−0.01 after 500 TD(0) cycles · TEST 4 fixed: warp-election bound (hdgl_bench_v39.exe: 34/34 pass)**
+**Ev4 Long [x]: Circular reward accumulator on S¹ — `reward_accum` is now a phase angle ∈ [0,2π]; gate fires when cos(acc)>0.5; no freeze past cycle 400 (97k candidates/600 cycles). σ-trit→phvel, Wu Wei exploration bonus, Pluck kernel (random phase injection). hdgl_bench_v40.exe: 34/34 pass**
 
 ---
 
