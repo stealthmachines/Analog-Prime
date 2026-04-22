@@ -14,15 +14,15 @@ $versions = @(
 
 foreach ($version in $versions) {
     Write-Host "`n=== Processing Version $($version.num) ===" -ForegroundColor Green
-    
+
     $tempDir = "temp_v$($version.num)"
     $codebaseDir = "$tempDir\codebase"
-    
+
     if (-not (Test-Path $codebaseDir)) {
         Write-Host "ERROR: $codebaseDir not found!" -ForegroundColor Red
         continue
     }
-    
+
     # Create new branch
     git checkout -b $version.branch 2>&1 | Out-Null
     if ($LASTEXITCODE -eq 0) {
@@ -31,33 +31,33 @@ foreach ($version in $versions) {
         Write-Host "Branch already exists, checking out: $($version.branch)"
         git checkout $version.branch 2>&1 | Out-Null
     }
-    
+
     # Copy codebase files
     Write-Host "Copying codebase files from $codebaseDir..."
-    
+
     # Remove old codebase directory if it exists (but keep .git)
     if (Test-Path "$WorkDir\codebase") {
         Remove-Item "$WorkDir\codebase" -Recurse -Force -ErrorAction SilentlyContinue
     }
-    
+
     # Copy new codebase
     Copy-Item "$codebaseDir\*" "$WorkDir\codebase" -Recurse -Force
-    
+
     # Stage and commit
     git add -A
     $commitMsg = "$($version.msg)"
     git commit -m $commitMsg 2>&1 | Out-Null
-    
+
     if ($LASTEXITCODE -eq 0) {
         Write-Host "Committed: $commitMsg"
-        
+
         # Create tag
         git tag -a $version.tag -m $version.msg 2>&1 | Out-Null
         Write-Host "Tagged: $($version.tag)"
     } else {
         Write-Host "No changes to commit for this version"
     }
-    
+
     # Return to master for next iteration
     git checkout master 2>&1 | Out-Null
 }
