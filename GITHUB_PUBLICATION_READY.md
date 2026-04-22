@@ -139,5 +139,5 @@ nvcc -O3 -arch=sm_75 -allow-unsupported-compiler `
 
 ## Ready to Publish ✅
 
-Once the GitHub repository is created at github.com/stealthmachines/Analog_Prime, 
+Once the GitHub repository is created at github.com/stealthmachines/Analog_Prime,
 run the push commands above to publish all branches and tags.
