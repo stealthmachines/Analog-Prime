@@ -1,0 +1,1 @@
+Our final optimization will be spinning the lattice, comes to mind zchg.org - powers, spinning, calculus?, ASK USER.
