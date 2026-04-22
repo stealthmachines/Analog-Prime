@@ -188,7 +188,7 @@ interference node (covers ~12.5% of phase space).
 # Add MSVC to PATH (VS2017 — adjust path for VS2019/2022)
 $env:PATH = "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Tools\MSVC\14.16.27023\bin\Hostx64\x64;$env:PATH"
 
-cd "C:\Users\Owner\Documents\Conscious 2.0"
+cd REPO/FILE/LOCATION(CHANGE_THIS)
 
 # Main executable
 nvcc -O3 -arch=sm_75 -allow-unsupported-compiler -lineinfo `
