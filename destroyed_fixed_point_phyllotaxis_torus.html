@@ -1,0 +1,257 @@
+
+<style>
+  canvas { display:block; }
+  .ctrl { display:flex; align-items:center; gap:10px; margin:8px 0; font-size:13px; color:var(--color-text-secondary); }
+  .ctrl label { min-width:120px; }
+  .ctrl input[type=range] { flex:1; }
+  .ctrl span { min-width:36px; font-family:var(--font-mono); font-size:12px; color:var(--color-text-primary); }
+  .panels { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:12px; }
+  .panel { background:var(--color-background-secondary); border-radius:var(--border-radius-lg); padding:12px; }
+  .panel-label { font-size:11px; font-weight:500; text-transform:uppercase; letter-spacing:.05em; color:var(--color-text-tertiary); margin-bottom:8px; }
+  .stat-row { display:flex; justify-content:space-between; font-size:12px; margin:3px 0; }
+  .stat-val { font-family:var(--font-mono); color:var(--color-text-primary); }
+  h2.sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); }
+</style>
+
+<h2 class="sr-only">Interactive visualization of the destroyed fixed point as phyllotaxis spiral and torus orbit in the Feistel coupled lattice map</h2>
+
+<div class="panels">
+  <div class="panel">
+    <div class="panel-label">Phyllotaxis — golden angle seeds</div>
+    <canvas id="cPhyl" width="300" height="300"></canvas>
+  </div>
+  <div class="panel">
+    <div class="panel-label">Torus orbit — (x_i, x_j) phase space</div>
+    <canvas id="cTorus" width="300" height="300"></canvas>
+  </div>
+</div>
+
+<div style="margin:14px 0 4px;">
+  <div class="ctrl">
+    <label>Steps evolved</label>
+    <input type="range" id="sSteps" min="1" max="400" value="1" step="1">
+    <span id="oSteps">1</span>
+  </div>
+  <div class="ctrl">
+    <label>Entropy offset</label>
+    <input type="range" id="sEnt" min="0" max="100" value="10" step="1">
+    <span id="oEnt">0.010</span>
+  </div>
+  <div class="ctrl">
+    <label>Coupling ε</label>
+    <input type="range" id="sEps" min="1" max="90" value="50" step="1">
+    <span id="oEps">0.50</span>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px;">
+  <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;">
+    <div style="font-size:11px;color:var(--color-text-tertiary);font-weight:500;text-transform:uppercase;letter-spacing:.05em;">Fixed point x*</div>
+    <div style="font-size:18px;font-weight:500;font-family:var(--font-mono);margin-top:4px;" id="statFP">1/φ = 0.6180</div>
+    <div style="font-size:11px;color:var(--color-text-secondary);margin-top:2px)">= golden angle / 2π</div>
+  </div>
+  <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;">
+    <div style="font-size:11px;color:var(--color-text-tertiary);font-weight:500;text-transform:uppercase;letter-spacing:.05em;">Current slot 0</div>
+    <div style="font-size:18px;font-weight:500;font-family:var(--font-mono);margin-top:4px;" id="statCur">0.6280</div>
+    <div style="font-size:11px;color:var(--color-text-secondary);margin-top:2px;" id="statDelta">Δ from x* = 0.010</div>
+  </div>
+  <div style="background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px;">
+    <div style="font-size:11px;color:var(--color-text-tertiary);font-weight:500;text-transform:uppercase;letter-spacing:.05em;">Orbit coverage</div>
+    <div style="font-size:18px;font-weight:500;font-family:var(--font-mono);margin-top:4px;" id="statCov">–</div>
+    <div style="font-size:11px;color:var(--color-text-secondary);margin-top:2px;">of torus T²</div>
+  </div>
+</div>
+
+<script>
+const PHI = 1.6180339887498948482;
+const GA  = 2 * Math.PI * (1 - 1/PHI/PHI);  // golden angle ≈ 2.399963...
+const FP  = 1/PHI;                              // fixed point 0.6180...
+
+function frac(x){ return x - Math.floor(x); }
+
+function feistel_step(xi, xj, eps, step_idx){
+  const xi_new = frac(PHI*(xi + eps*xj + 1.0));
+  const xj_new = frac(PHI*(xj + eps*xi + 1.0));
+  return [xi_new, xj_new];
+}
+
+function compute_orbit(ent_offset, eps, n_steps){
+  let xi = frac(FP + ent_offset);
+  let xj = frac(FP + ent_offset * 0.5);
+  const pts = [[xi, xj]];
+  for(let s=0;s<n_steps;s++){
+    [xi,xj]=feistel_step(xi,xj,eps,s);
+    pts.push([xi,xj]);
+  }
+  return pts;
+}
+
+function draw_phyllotaxis(canvas, n_seeds, highlight_fp){
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx = W/2, cy = H/2;
+  const R = Math.min(W,H)/2 - 16;
+  ctx.clearRect(0,0,W,H);
+
+  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  for(let n=1;n<=n_seeds;n++){
+    const r = Math.sqrt(n/n_seeds) * R;
+    const theta = n * GA;
+    const x = cx + r*Math.cos(theta);
+    const y = cy + r*Math.sin(theta);
+
+    const phase_frac = frac(theta/(2*Math.PI));
+    const near_fp = Math.abs(phase_frac - FP) < 0.05 || Math.abs(phase_frac - FP + 1) < 0.05;
+
+    const rad = Math.max(1.5, 4 * Math.sqrt(n/n_seeds));
+
+    if(near_fp){
+      ctx.beginPath();
+      ctx.arc(x,y,rad+1.5,0,2*Math.PI);
+      ctx.fillStyle = dark ? '#7F77DD' : '#534AB7';
+      ctx.fill();
+    } else {
+      ctx.beginPath();
+      ctx.arc(x,y,rad,0,2*Math.PI);
+      ctx.fillStyle = dark ? '#5DCAA5' : '#1D9E75';
+      ctx.fill();
+    }
+  }
+
+  ctx.beginPath();
+  const fp_theta = FP * 2*Math.PI;
+  const fp_r = R * 0.72;
+  const fp_x = cx + fp_r*Math.cos(fp_theta);
+  const fp_y = cy + fp_r*Math.sin(fp_theta);
+  ctx.arc(fp_x,fp_y,6,0,2*Math.PI);
+  ctx.strokeStyle = dark?'#EF9F27':'#BA7517';
+  ctx.lineWidth=1.5;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.moveTo(cx,cy);
+  ctx.arc(cx,cy,fp_r,0,fp_theta);
+  ctx.strokeStyle='rgba(186,117,23,0.2)';
+  ctx.lineWidth=0.5;
+  ctx.stroke();
+
+  ctx.fillStyle = dark?'#c2c0b6':'#3d3d3a';
+  ctx.font = '11px monospace';
+  ctx.textAlign='center';
+  ctx.fillText('x* = 1/φ', fp_x, fp_y - 10);
+}
+
+function draw_torus_orbit(canvas, pts){
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const cx=W/2, cy=H/2;
+  const R=70, r=28;
+  ctx.clearRect(0,0,W,H);
+  const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  function torus3d(xi, xj){
+    const u = xi*2*Math.PI;
+    const v = xj*2*Math.PI;
+    const x3 = (R + r*Math.cos(v))*Math.cos(u);
+    const y3 = (R + r*Math.cos(v))*Math.sin(u);
+    const z3 = r*Math.sin(v);
+    const iso_x = cx + x3*0.9 + y3*0.4;
+    const iso_y = cy - z3*0.9 + y3*0.25;
+    return [iso_x, iso_y];
+  }
+
+  const gridN = 32;
+  ctx.strokeStyle = dark?'rgba(80,80,80,0.4)':'rgba(180,180,180,0.5)';
+  ctx.lineWidth=0.5;
+  for(let ui=0;ui<=gridN;ui++){
+    ctx.beginPath();
+    for(let vi=0;vi<=gridN;vi++){
+      const [sx,sy]=torus3d(ui/gridN, vi/gridN);
+      if(vi===0) ctx.moveTo(sx,sy); else ctx.lineTo(sx,sy);
+    }
+    ctx.stroke();
+  }
+  for(let vi=0;vi<=gridN;vi+=4){
+    ctx.beginPath();
+    for(let ui=0;ui<=gridN;ui++){
+      const [sx,sy]=torus3d(ui/gridN, vi/gridN);
+      if(ui===0) ctx.moveTo(sx,sy); else ctx.lineTo(sx,sy);
+    }
+    ctx.stroke();
+  }
+
+  const [fpx,fpy]=torus3d(FP,FP);
+  ctx.beginPath();
+  ctx.arc(fpx,fpy,5,0,2*Math.PI);
+  ctx.strokeStyle=dark?'#EF9F27':'#BA7517';
+  ctx.lineWidth=1.5;
+  ctx.stroke();
+
+  if(pts.length>1){
+    const N=pts.length;
+    for(let i=1;i<N;i++){
+      const alpha=i/N;
+      const [x0,y0]=torus3d(pts[i-1][0],pts[i-1][1]);
+      const [x1,y1]=torus3d(pts[i][0],  pts[i][1]);
+      ctx.beginPath();
+      ctx.moveTo(x0,y0); ctx.lineTo(x1,y1);
+      const a=Math.round(alpha*200);
+      ctx.strokeStyle=dark?`rgba(95,218,165,${0.3+alpha*0.7})`:`rgba(29,158,117,${0.3+alpha*0.7})`;
+      ctx.lineWidth=1.2;
+      ctx.stroke();
+    }
+    const last=pts[N-1];
+    const [lx,ly]=torus3d(last[0],last[1]);
+    ctx.beginPath();
+    ctx.arc(lx,ly,3.5,0,2*Math.PI);
+    ctx.fillStyle=dark?'#9FE1CB':'#1D9E75';
+    ctx.fill();
+  }
+
+  ctx.fillStyle=dark?'#c2c0b6':'#3d3d3a';
+  ctx.font='10px monospace';
+  ctx.textAlign='center';
+  const [fpLx,fpLy]=torus3d(FP,FP);
+  ctx.fillText('x*=(1/φ,1/φ)',fpLx,fpLy-9);
+}
+
+function measure_coverage(pts){
+  const bins=20;
+  const seen=new Set();
+  for(const [xi,xj] of pts){
+    const bx=Math.floor(xi*bins);
+    const by=Math.floor(xj*bins);
+    seen.add(bx*bins+by);
+  }
+  return seen.size/(bins*bins);
+}
+
+function update(){
+  const steps  = parseInt(document.getElementById('sSteps').value);
+  const entPct = parseInt(document.getElementById('sEnt').value);
+  const epsPct = parseInt(document.getElementById('sEps').value);
+  const ent_offset = entPct/1000;
+  const eps = epsPct/100;
+
+  document.getElementById('oSteps').textContent = steps;
+  document.getElementById('oEnt').textContent   = ent_offset.toFixed(3);
+  document.getElementById('oEps').textContent   = eps.toFixed(2);
+
+  const pts = compute_orbit(ent_offset, eps, steps);
+  const cur = pts[pts.length-1];
+  const cov = measure_coverage(pts);
+
+  document.getElementById('statCur').textContent  = cur[0].toFixed(4);
+  document.getElementById('statDelta').textContent= 'Δ from x* = '+(Math.abs(cur[0]-FP)).toFixed(4);
+  document.getElementById('statCov').textContent  = (cov*100).toFixed(1)+'%';
+
+  const n_seeds = Math.min(800, 200 + steps);
+  draw_phyllotaxis(document.getElementById('cPhyl'), n_seeds, true);
+  draw_torus_orbit(document.getElementById('cTorus'), pts);
+}
+
+['sSteps','sEnt','sEps'].forEach(id=>{
+  document.getElementById(id).addEventListener('input', update);
+});
+update();
+</script>

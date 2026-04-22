@@ -1,0 +1,50 @@
+# Compiled executables
+*.exe
+*.dll
+*.so
+*.obj
+*.o
+*.lib
+
+# CUDA/GPU build artifacts
+*.ptx
+*.cubin
+*.fatbin
+
+# Python
+*.pyc
+__pycache__/
+*.egg-info/
+dist/
+build/
+
+# VS Code
+.vscode/
+
+# Archives (version control managed separately via tags/branches)
+*.zip
+
+# IDE
+*.sln
+*.vcxproj
+*.vcxproj.filters
+.vs/
+
+# Build outputs
+bin/
+Debug/
+Release/
+x64/
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Large files
+*.bin
