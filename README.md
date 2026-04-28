@@ -1,4 +1,4 @@
-# HDGL Analog v33–v35 — φ-Resonance Mersenne Prime Search Engine
+# HDGL Analog v33–v36 — φ-Resonance Mersenne Prime Search Engine
 
 <img width="1301" height="630" alt="image" src="https://github.com/user-attachments/assets/9f681619-59db-4e3d-855a-610aec5378bd" />
 https://zchg.org/t/github-stealthmachines-analog-prime/969
