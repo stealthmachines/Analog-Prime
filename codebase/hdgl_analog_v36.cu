@@ -1,5 +1,5 @@
 // ============================================================================
-// HDGL Analog v35 — Full U-field Bridge (Ev3 Long complete)
+// HDGL Analog v36 (called v35 in some contexts, but not the same as the other v35) — Full U-field Bridge (Ev3 Long complete)
 // ============================================================================
 //
 // CHANGES FROM v34:
