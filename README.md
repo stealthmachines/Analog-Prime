@@ -606,3 +606,8 @@ Prime invariant: coherent field → u_inner uniform across warp → M_U stable �
 | `codebase/rosetta_stone.json` | 500-phrase project vocabulary → Base4096 token map |
 | `codebase/hdgl_session_handoff.py` | Encode/decode full project context as single Base4096 block |
 | `codebase/hdgl_selfprovision.ps1` | Run bench and emit session token automatically |
+
+# Frontier Research Files
+hdgl_analog_v37.cu, hdgl_analog_v39.cu, hdgl_analog_nullweaver.cu (Nullweaver Ω BEAST MODE), hdgl_analog_nullweaver-v2.cu (Nullweaver Ω BEAST MODE — FULL EDITION)
+
+<img width="1040" height="528" alt="image" src="https://github.com/user-attachments/assets/7cb672c0-6bb0-4364-bee7-88c240f37f3d" />
