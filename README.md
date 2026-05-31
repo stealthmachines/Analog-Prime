@@ -11,11 +11,11 @@ verdict gate, and a full U-field bridge derived from the X+1=0 framework.
 
 # This is part and parcel to the greater suite:
 
-* stealthmachines/mersenne-prime-pipeline
-* stealthmachines/Analog-Prime-B
-* stealthmachines/Prime-Hunter-2
-* stealthmachines/Trailblaze
-* stealthmachines/conscious (included also in this repo)
+* https://github.com/stealthmachines/mersenne-prime-pipeline
+* https://github.com/stealthmachines/Analog-Prime-B
+* https://github.com/stealthmachines/Prime-Hunter-2
+* https://github.com/stealthmachines/Trailblaze
+* https://github.com/stealthmachines/conscious (included also in this repo)
 
 ## Overview
 
