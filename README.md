@@ -9,18 +9,13 @@ verdict gate, and a full U-field bridge derived from the X+1=0 framework.
 
 ---
 
-# This is part and parcel to a full suite:
+# This is part and parcel to the greater suite:
 
 * stealthmachines/mersenne-prime-pipeline
-4-track GPU-accelerated Mersenne prime search: phi-lattice scorer + exact-integer schoolbook Lucas-Lehmer verifier (CUDA, RTX 2060 sm_75)
-
 * stealthmachines/Analog-Prime-B
-
 * stealthmachines/Prime-Hunter-2
-A decent enough means to explore where new primes might be hiding
-
 * stealthmachines/Trailblaze
-* stealthmachines/conscious
+* stealthmachines/conscious (included also in this repo)
 
 ## Overview
 
