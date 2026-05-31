@@ -9,7 +9,7 @@ verdict gate, and a full U-field bridge derived from the X+1=0 framework.
 
 ---
 
-# This is part and parcel to the greater suite:
+#### This is part and parcel to the greater suite:
 
 * https://github.com/stealthmachines/mersenne-prime-pipeline
 * https://github.com/stealthmachines/Analog-Prime-B
