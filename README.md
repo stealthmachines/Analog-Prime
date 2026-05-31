@@ -19,6 +19,9 @@ verdict gate, and a full U-field bridge derived from the X+1=0 framework.
 * stealthmachines/Prime-Hunter-2
 A decent enough means to explore where new primes might be hiding
 
+* stealthmachines/Trailblaze
+* stealthmachines/conscious
+
 ## Overview
 
 HDGL (Harmonic Differential Golden Lattice) is an analog-inspired prime discovery
